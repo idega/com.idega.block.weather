@@ -9,6 +9,7 @@
  */
 package com.idega.block.weather.business;
 
+import java.util.Collection;
 import java.util.Map;
 
 
@@ -16,5 +17,9 @@ public interface WeatherBusiness {
 
 	public Map parseXML(String URL);
 	public WeatherData getWeather(String id);
-	
+	/**
+	 * Get a collection of all the the WeatherStations used by the weather block
+	 * @return A collecton of <code>WeatherData</code> objects
+	 */
+	public Collection getWeatherStations();
 }
