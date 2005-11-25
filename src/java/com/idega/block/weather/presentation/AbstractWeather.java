@@ -9,8 +9,15 @@
  */
 package com.idega.block.weather.presentation;
 
+import java.rmi.RemoteException;
+import java.util.Collection;
+import java.util.Iterator;
 import com.idega.block.weather.business.WeatherBusiness;
 import com.idega.block.weather.business.WeatherData;
+import com.idega.block.weather.business.WeatherSession;
+import com.idega.business.IBOLookup;
+import com.idega.business.IBOLookupException;
+import com.idega.business.IBORuntimeException;
 import com.idega.idegaweb.IWBundle;
 import com.idega.idegaweb.IWResourceBundle;
 import com.idega.presentation.Block;
@@ -18,6 +25,8 @@ import com.idega.presentation.IWContext;
 import com.idega.presentation.Image;
 import com.idega.presentation.Layer;
 import com.idega.presentation.text.Text;
+import com.idega.presentation.ui.DropdownMenu;
+import com.idega.presentation.ui.Form;
 
 
 public abstract class AbstractWeather extends Block {
@@ -25,9 +34,19 @@ public abstract class AbstractWeather extends Block {
 	private boolean iShowForcast = false;
 	private String iWeatherID;
 	
-	public void main(IWContext iwc) {
+	public void main(IWContext iwc) throws RemoteException {
 		IWBundle iwb = getBundle(iwc);
 		IWResourceBundle iwrb = getResourceBundle(iwc);
+		
+		String wID = iwc.getParameter("wstations");
+		if (wID != null) {
+			iWeatherID = wID;
+			getSession(iwc).setWeatherStationID(iWeatherID);
+		} else if (getSession(iwc).getWeatherStationID() != null) {
+			iWeatherID = getSession(iwc).getWeatherStationID();
+		} else if (iWeatherID != null) {
+			getSession(iwc).setWeatherStationID(iWeatherID);
+		}
 		
 		if (iWeatherID == null) {
 			add(new Text(iwrb.getLocalizedString("no_station_selected", "No weather station selected")));
@@ -86,10 +105,36 @@ public abstract class AbstractWeather extends Block {
 		time.add(new Text(data.getTimestamp().toString()));
 		layer.add(time);
 		
+		
+		Collection weatherStations = getBusiness().getWeatherStations();
+		Iterator iter = weatherStations.iterator();
+		Form form = new Form();
+		DropdownMenu stationsDM = new DropdownMenu("wstations");
+		while (iter.hasNext()) {
+			WeatherData wd = (WeatherData) iter.next();
+			stationsDM.addMenuElement(wd.getID(), wd.getName());
+		}
+		stationsDM.setSelectedElement(iWeatherID);
+		stationsDM.setToSubmit();
+		form.add(stationsDM);
+		Layer stations = new Layer(Layer.DIV);
+		stations.setStyleClass("weatherStations");
+		stations.add(form);
+		layer.add(stations);
+		
 		add(layer);
 	}
 	
 	protected abstract WeatherBusiness getBusiness();
+	
+	protected WeatherSession getSession(IWContext iwc) {
+		try {
+			return (WeatherSession) IBOLookup.getSessionInstance(iwc, WeatherSession.class);
+		}
+		catch (IBOLookupException e) {
+			throw new IBORuntimeException(e);
+		}
+	}
 
 	public String getBundleIdentifier() {
 		return "com.idega.block.weather";

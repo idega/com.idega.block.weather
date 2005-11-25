@@ -31,3 +31,7 @@ div.temperature {
 div.windspeed {
 	clear: both;
 }
+
+div.weatherStations {
+	display: none;
+}
