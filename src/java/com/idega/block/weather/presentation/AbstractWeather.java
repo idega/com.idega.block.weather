@@ -33,6 +33,8 @@ public abstract class AbstractWeather extends Block {
 
 	private boolean iShowForcast = false;
 	private String iWeatherID;
+	private String weatherImageLocation = null;
+	private String weatherImageType = ".png";
 	
 	public void main(IWContext iwc) throws RemoteException {
 		IWBundle iwb = getBundle(iwc);
@@ -69,8 +71,13 @@ public abstract class AbstractWeather extends Block {
 		
 		if (data.getWeatherCode() != null) {
 			Layer image = new Layer(Layer.DIV);
-			image.setStyleClass("image");
-			Image weatherImage = iwb.getImage("/images/"+ data.getWeatherCode() + ".png", data.getWeatherDescription());
+			image.setStyleClass("image");			
+			Image weatherImage = null;
+			if (weatherImageLocation == null) {
+				weatherImage = iwb.getImage("/images/"+ data.getWeatherCode() + weatherImageType, data.getWeatherDescription());
+			} else {
+				weatherImage = new Image(weatherImageLocation+data.getWeatherCode()+weatherImageType, data.getWeatherDescription());
+			}
 			weatherImage.setWidth("75");
 			image.add(weatherImage);
 			layer.add(image);
@@ -138,6 +145,20 @@ public abstract class AbstractWeather extends Block {
 
 	public String getBundleIdentifier() {
 		return "com.idega.block.weather";
+	}
+	
+	public void setWeatherImageType(String type) {
+		if (type != null && !type.startsWith(".")) {
+			type = "."+type;
+		}
+		weatherImageType = type;
+	}
+	
+	public void setWeatherImageLocation(String location) {
+		if (location != null && !location.endsWith("/")) {
+			location = location+"/";
+		}
+		weatherImageLocation = location;
 	}
 	
 	public void setShowForcast(boolean showForcast) {
