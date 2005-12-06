@@ -35,6 +35,7 @@ public abstract class AbstractWeather extends Block {
 	private String iWeatherID;
 	private String weatherImageLocation = null;
 	private String weatherImageType = ".png";
+	private String weatherImageWidth = "75";
 	
 	public void main(IWContext iwc) throws RemoteException {
 		IWBundle iwb = getBundle(iwc);
@@ -78,7 +79,7 @@ public abstract class AbstractWeather extends Block {
 			} else {
 				weatherImage = new Image(weatherImageLocation+data.getWeatherCode()+weatherImageType, data.getWeatherDescription());
 			}
-			weatherImage.setWidth("75");
+			weatherImage.setWidth(weatherImageWidth);
 			image.add(weatherImage);
 			layer.add(image);
 		}
@@ -159,6 +160,10 @@ public abstract class AbstractWeather extends Block {
 			location = location+"/";
 		}
 		weatherImageLocation = location;
+	}
+	
+	public void setWeatherImageWidth(String width) {
+		weatherImageWidth = width;
 	}
 	
 	public void setShowForcast(boolean showForcast) {
