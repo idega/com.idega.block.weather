@@ -122,6 +122,11 @@ public abstract class AbstractWeather extends Block {
 			windDirection.setStyleClass("windDirection");
 			windDirection.add(new Text(data.getWindDirectionTxt()));
 			layer.add(windDirection);
+			
+			Layer windDirectionImage = new Layer(Layer.DIV);
+			windDirectionImage.setStyleClass("windDirectionIcon");
+			windDirectionImage.add(iwb.getImage("/images/"+ data.getWindDirectionTxt() + weatherImageType, data.getWindDirectionTxt()));
+			layer.add(windDirectionImage);
 		}
 		
 		if (data.getClearance() != null) {

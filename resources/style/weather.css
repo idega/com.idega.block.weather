@@ -35,3 +35,7 @@ div.windspeed {
 div.weatherStations {
 	display: none;
 }
+
+div.windDirectionIcon {
+	display: none;
+}
