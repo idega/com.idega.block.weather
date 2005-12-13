@@ -17,6 +17,8 @@ public interface WeatherBusiness {
 
 	public Map parseXML(String URL);
 	public WeatherData getWeather(String id);
+	public String getTemperatureSign();
+	public String getWindSpeedUnit();
 	/**
 	 * Get a collection of all the the WeatherStations used by the weather block
 	 * @return A collecton of <code>WeatherData</code> objects

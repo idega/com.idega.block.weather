@@ -45,9 +45,11 @@ public abstract class AbstractWeather extends Block {
 		if (wID != null) {
 			iWeatherID = wID;
 			getSession(iwc).setWeatherStationID(iWeatherID);
-		} else if (getSession(iwc).getWeatherStationID() != null) {
+		}
+		else if (getSession(iwc).getWeatherStationID() != null) {
 			iWeatherID = getSession(iwc).getWeatherStationID();
-		} else if (iWeatherID != null) {
+		}
+		else if (iWeatherID != null) {
 			getSession(iwc).setWeatherStationID(iWeatherID);
 		}
 		
@@ -76,7 +78,8 @@ public abstract class AbstractWeather extends Block {
 			Image weatherImage = null;
 			if (weatherImageLocation == null) {
 				weatherImage = iwb.getImage("/images/"+ data.getWeatherCode() + weatherImageType, data.getWeatherDescription());
-			} else {
+			}
+			else {
 				weatherImage = new Image(weatherImageLocation+data.getWeatherCode()+weatherImageType, data.getWeatherDescription());
 			}
 			weatherImage.setWidth(weatherImageWidth);
@@ -84,14 +87,34 @@ public abstract class AbstractWeather extends Block {
 			layer.add(image);
 		}
 		
+		Float temp = data.getTemperature();
 		Layer temperature = new Layer(Layer.DIV);
 		temperature.setStyleClass("temperature");
-		temperature.add(new Text(data.getTemperature().toString()) + "&deg;");
+
+		Layer temperatureSign = new Layer(Layer.DIV);
+		temperature.setStyleClass("temperatureSign");
+
+		if (temp.floatValue() > 0) {
+			temperature.setStyleClass("positive");
+			temperatureSign.setStyleClass("positive");
+		}
+		else if (temp.floatValue() < 0) {
+			temperature.setStyleClass("negative");
+			temperatureSign.setStyleClass("negative");
+		}
+		else if (temp.floatValue() == 0) {
+			temperature.setStyleClass("zero");
+			temperatureSign.setStyleClass("zero");
+		}
+		
+		temperature.add(new Text(temp.toString()) + "&deg;");
+		temperature.add(new Text(getBusiness().getTemperatureSign()));
 		layer.add(temperature);
+		layer.add(temperatureSign);
 		
 		Layer windspeed = new Layer(Layer.DIV);
 		windspeed.setStyleClass("windspeed");
-		windspeed.add(new Text(data.getWindspeed() + "m/s"));
+		windspeed.add(new Text(data.getWindspeed() + Text.NON_BREAKING_SPACE + getBusiness().getWindSpeedUnit()));
 		layer.add(windspeed);
 		
 		if (data.getWindDirectionTxt() != null) {
