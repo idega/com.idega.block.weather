@@ -31,7 +31,6 @@ import com.idega.presentation.ui.Form;
 
 public abstract class AbstractWeather extends Block {
 
-	private boolean iShowForcast = false;
 	private String iWeatherID;
 	private String weatherImageLocation = null;
 	private String weatherImageType = ".png";
@@ -195,7 +194,6 @@ public abstract class AbstractWeather extends Block {
 	}
 	
 	public void setShowForcast(boolean showForcast) {
-		iShowForcast = showForcast;
 	}
 	
 	public void setWeatherID(String weatherID) {
