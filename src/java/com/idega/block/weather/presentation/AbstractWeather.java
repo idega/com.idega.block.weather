@@ -42,22 +42,22 @@ public abstract class AbstractWeather extends Block {
 		
 		String wID = iwc.getParameter("wstations");
 		if (wID != null) {
-			iWeatherID = wID;
-			getSession(iwc).setWeatherStationID(iWeatherID);
+			this.iWeatherID = wID;
+			getSession(iwc).setWeatherStationID(this.iWeatherID);
 		}
 		else if (getSession(iwc).getWeatherStationID() != null) {
-			iWeatherID = getSession(iwc).getWeatherStationID();
+			this.iWeatherID = getSession(iwc).getWeatherStationID();
 		}
-		else if (iWeatherID != null) {
-			getSession(iwc).setWeatherStationID(iWeatherID);
+		else if (this.iWeatherID != null) {
+			getSession(iwc).setWeatherStationID(this.iWeatherID);
 		}
 		
-		if (iWeatherID == null) {
+		if (this.iWeatherID == null) {
 			add(new Text(iwrb.getLocalizedString("no_station_selected", "No weather station selected")));
 			return;
 		}
 		
-		WeatherData data = getBusiness().getWeather(iWeatherID);
+		WeatherData data = getBusiness().getWeather(this.iWeatherID);
 		if (data == null) {
 			add(new Text(iwrb.getLocalizedString("no_data_found_for_station", "No data found for weather station")));
 			return;
@@ -75,13 +75,13 @@ public abstract class AbstractWeather extends Block {
 			Layer image = new Layer(Layer.DIV);
 			image.setStyleClass("image");			
 			Image weatherImage = null;
-			if (weatherImageLocation == null) {
-				weatherImage = iwb.getImage("/images/"+ data.getWeatherCode() + weatherImageType, data.getWeatherDescription());
+			if (this.weatherImageLocation == null) {
+				weatherImage = iwb.getImage("/images/"+ data.getWeatherCode() + this.weatherImageType, data.getWeatherDescription());
 			}
 			else {
-				weatherImage = new Image(weatherImageLocation+data.getWeatherCode()+weatherImageType, data.getWeatherDescription());
+				weatherImage = new Image(this.weatherImageLocation+data.getWeatherCode()+this.weatherImageType, data.getWeatherDescription());
 			}
-			weatherImage.setWidth(weatherImageWidth);
+			weatherImage.setWidth(this.weatherImageWidth);
 			image.add(weatherImage);
 			layer.add(image);
 		}
@@ -124,7 +124,7 @@ public abstract class AbstractWeather extends Block {
 			
 			Layer windDirectionImage = new Layer(Layer.DIV);
 			windDirectionImage.setStyleClass("windDirectionIcon");
-			windDirectionImage.add(iwb.getImage("/images/"+ data.getWindDirectionTxt() + weatherImageType, data.getWindDirectionTxt()));
+			windDirectionImage.add(iwb.getImage("/images/"+ data.getWindDirectionTxt() + this.weatherImageType, data.getWindDirectionTxt()));
 			layer.add(windDirectionImage);
 		}
 		
@@ -149,7 +149,7 @@ public abstract class AbstractWeather extends Block {
 			WeatherData wd = (WeatherData) iter.next();
 			stationsDM.addMenuElement(wd.getID(), wd.getName());
 		}
-		stationsDM.setSelectedElement(iWeatherID);
+		stationsDM.setSelectedElement(this.iWeatherID);
 		stationsDM.setToSubmit();
 		form.add(stationsDM);
 		Layer stations = new Layer(Layer.DIV);
@@ -179,24 +179,24 @@ public abstract class AbstractWeather extends Block {
 		if (type != null && !type.startsWith(".")) {
 			type = "."+type;
 		}
-		weatherImageType = type;
+		this.weatherImageType = type;
 	}
 	
 	public void setWeatherImageLocation(String location) {
 		if (location != null && !location.endsWith("/")) {
 			location = location+"/";
 		}
-		weatherImageLocation = location;
+		this.weatherImageLocation = location;
 	}
 	
 	public void setWeatherImageWidth(String width) {
-		weatherImageWidth = width;
+		this.weatherImageWidth = width;
 	}
 	
 	public void setShowForcast(boolean showForcast) {
 	}
 	
 	public void setWeatherID(String weatherID) {
-		iWeatherID = weatherID;
+		this.iWeatherID = weatherID;
 	}
 }

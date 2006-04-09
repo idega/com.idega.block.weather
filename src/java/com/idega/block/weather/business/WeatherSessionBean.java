@@ -1,5 +1,5 @@
 /*
- * $Id: WeatherSessionBean.java,v 1.1 2005/11/25 12:09:11 gimmi Exp $
+ * $Id: WeatherSessionBean.java,v 1.2 2006/04/09 11:40:05 laddi Exp $
  * Created on Nov 25, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -18,7 +18,7 @@ public class WeatherSessionBean extends IBOSessionBean implements WeatherSession
 
 	
 	public String getWeatherStationID() {
-		return stationID;
+		return this.stationID;
 	}
 
 	public void setWeatherStationID(String stationID) {

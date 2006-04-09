@@ -26,7 +26,7 @@ public class WeatherData {
 	private String clearance;
 	 
 	public String getClearance() {
-		return clearance;
+		return this.clearance;
 	}
 	
 	public void setClearance(String clearance) {
@@ -34,7 +34,7 @@ public class WeatherData {
 	}
 	
 	public String getID() {
-		return id;
+		return this.id;
 	}
 	
 	public void setID(String id) {
@@ -42,7 +42,7 @@ public class WeatherData {
 	}
 	
 	public String getName() {
-		return name;
+		return this.name;
 	}
 	
 	public void setName(String name) {
@@ -50,7 +50,7 @@ public class WeatherData {
 	}
 	
 	public Float getTemperature() {
-		return temperature;
+		return this.temperature;
 	}
 	
 	public void setTemperature(Float temperature) {
@@ -58,7 +58,7 @@ public class WeatherData {
 	}
 	
 	public String getWeatherCode() {
-		return weatherCode;
+		return this.weatherCode;
 	}
 	
 	public void setWeatherCode(String weatherCode) {
@@ -66,7 +66,7 @@ public class WeatherData {
 	}
 	
 	public String getWeatherCodeURL() {
-		return weatherCodeURL;
+		return this.weatherCodeURL;
 	}
 	
 	public void setWeatherCodeURL(String weatherCodeURL) {
@@ -74,7 +74,7 @@ public class WeatherData {
 	}
 	
 	public String getWeatherDescription() {
-		return weatherDescription;
+		return this.weatherDescription;
 	}
 	
 	public void setWeatherDescription(String weatherDescription) {
@@ -82,7 +82,7 @@ public class WeatherData {
 	}
 	
 	public Float getWindDirection() {
-		return windDirection;
+		return this.windDirection;
 	}
 	
 	public void setWindDirection(Float windDirection) {
@@ -90,7 +90,7 @@ public class WeatherData {
 	}
 	
 	public String getWindDirectionTxt() {
-		return windDirectionTxt;
+		return this.windDirectionTxt;
 	}
 	
 	public void setWindDirectionTxt(String windDirectionTxt) {
@@ -98,7 +98,7 @@ public class WeatherData {
 	}
 	
 	public Float getWindspeed() {
-		return windspeed;
+		return this.windspeed;
 	}
 	
 	public void setWindspeed(Float windspeed) {
@@ -106,7 +106,7 @@ public class WeatherData {
 	}
 
 	public Timestamp getTimestamp() {
-		return timestamp;
+		return this.timestamp;
 	}
 	
 	public void setTimestamp(Timestamp timestamp) {
