@@ -36,6 +36,10 @@ public abstract class AbstractWeather extends Block {
 	private String weatherImageType = ".png";
 	private String weatherImageWidth = "75";
 	
+	private boolean iShowWeatherStations = true;
+	private boolean iRoundValues = false;
+	private boolean iShowWindUnit = true;
+	
 	public void main(IWContext iwc) throws RemoteException {
 		IWBundle iwb = getBundle(iwc);
 		IWResourceBundle iwrb = getResourceBundle(iwc);
@@ -90,30 +94,27 @@ public abstract class AbstractWeather extends Block {
 		Layer temperature = new Layer(Layer.DIV);
 		temperature.setStyleClass("temperature");
 
-		Layer temperatureSign = new Layer(Layer.DIV);
-		temperature.setStyleClass("temperatureSign");
-
 		if (temp.floatValue() > 0) {
 			temperature.setStyleClass("positive");
-			temperatureSign.setStyleClass("positive");
 		}
 		else if (temp.floatValue() < 0) {
 			temperature.setStyleClass("negative");
-			temperatureSign.setStyleClass("negative");
 		}
 		else if (temp.floatValue() == 0) {
 			temperature.setStyleClass("zero");
-			temperatureSign.setStyleClass("zero");
 		}
 		
-		temperature.add(new Text(temp.toString()) + "&deg;");
+		temperature.add(new Text((this.iRoundValues ? Math.rint(temp.floatValue()) : temp.floatValue()) + "&deg;"));
 		temperature.add(new Text(getBusiness().getTemperatureSign()));
 		layer.add(temperature);
-		layer.add(temperatureSign);
 		
+		Float windspeedValue = data.getWindspeed();
 		Layer windspeed = new Layer(Layer.DIV);
 		windspeed.setStyleClass("windspeed");
-		windspeed.add(new Text(data.getWindspeed() + Text.NON_BREAKING_SPACE + getBusiness().getWindSpeedUnit()));
+		windspeed.add(new Text(String.valueOf(this.iRoundValues ? Math.rint(windspeedValue.floatValue()) : data.getWindspeed().floatValue())));
+		if (this.iShowWindUnit) {
+			windspeed.add(new Text(Text.NON_BREAKING_SPACE + getBusiness().getWindSpeedUnit()));
+		}
 		layer.add(windspeed);
 		
 		if (data.getWindDirectionTxt() != null) {
@@ -140,22 +141,23 @@ public abstract class AbstractWeather extends Block {
 		time.add(new Text(data.getTimestamp().toString()));
 		layer.add(time);
 		
-		
-		Collection weatherStations = getBusiness().getWeatherStations();
-		Iterator iter = weatherStations.iterator();
-		Form form = new Form();
-		DropdownMenu stationsDM = new DropdownMenu("wstations");
-		while (iter.hasNext()) {
-			WeatherData wd = (WeatherData) iter.next();
-			stationsDM.addMenuElement(wd.getID(), wd.getName());
+		if (this.iShowWeatherStations) {
+			Collection weatherStations = getBusiness().getWeatherStations();
+			Iterator iter = weatherStations.iterator();
+			Form form = new Form();
+			DropdownMenu stationsDM = new DropdownMenu("wstations");
+			while (iter.hasNext()) {
+				WeatherData wd = (WeatherData) iter.next();
+				stationsDM.addMenuElement(wd.getID(), wd.getName());
+			}
+			stationsDM.setSelectedElement(this.iWeatherID);
+			stationsDM.setToSubmit();
+			form.add(stationsDM);
+			Layer stations = new Layer(Layer.DIV);
+			stations.setStyleClass("weatherStations");
+			stations.add(form);
+			layer.add(stations);
 		}
-		stationsDM.setSelectedElement(this.iWeatherID);
-		stationsDM.setToSubmit();
-		form.add(stationsDM);
-		Layer stations = new Layer(Layer.DIV);
-		stations.setStyleClass("weatherStations");
-		stations.add(form);
-		layer.add(stations);
 		
 		add(layer);
 	}
@@ -198,5 +200,19 @@ public abstract class AbstractWeather extends Block {
 	
 	public void setWeatherID(String weatherID) {
 		this.iWeatherID = weatherID;
+	}
+	
+	public void setShowWeatherStations(boolean showWeatherStations) {
+		this.iShowWeatherStations = showWeatherStations;
+	}
+
+	
+	public void setToRoundValues(boolean roundValues) {
+		this.iRoundValues = roundValues;
+	}
+
+	
+	public void setShowWindUnit(boolean showWindUnit) {
+		this.iShowWindUnit = showWindUnit;
 	}
 }
