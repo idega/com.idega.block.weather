@@ -10,8 +10,10 @@
 package com.idega.block.weather.presentation;
 
 import java.rmi.RemoteException;
+import java.text.NumberFormat;
 import java.util.Collection;
 import java.util.Iterator;
+
 import com.idega.block.weather.business.WeatherBusiness;
 import com.idega.block.weather.business.WeatherData;
 import com.idega.block.weather.business.WeatherSession;
@@ -104,14 +106,18 @@ public abstract class AbstractWeather extends Block {
 			temperature.setStyleClass("zero");
 		}
 		
-		temperature.add(new Text((this.iRoundValues ? Math.rint(temp.floatValue()) : temp.floatValue()) + "&deg;"));
+		NumberFormat format = NumberFormat.getInstance();
+		format.setMaximumFractionDigits(this.iRoundValues ? 0 : 1);
+		format.setMinimumFractionDigits(this.iRoundValues ? 0 : 1);
+		
+		temperature.add(new Text(format.format(temp.doubleValue()) + "&deg;"));
 		temperature.add(new Text(getBusiness().getTemperatureSign()));
 		layer.add(temperature);
 		
 		Float windspeedValue = data.getWindspeed();
 		Layer windspeed = new Layer(Layer.DIV);
 		windspeed.setStyleClass("windspeed");
-		windspeed.add(new Text(String.valueOf(this.iRoundValues ? Math.rint(windspeedValue.floatValue()) : data.getWindspeed().floatValue())));
+		windspeed.add(new Text(format.format(windspeedValue.floatValue())));
 		if (this.iShowWindUnit) {
 			windspeed.add(new Text(Text.NON_BREAKING_SPACE + getBusiness().getWindSpeedUnit()));
 		}
