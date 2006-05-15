@@ -42,6 +42,8 @@ public abstract class AbstractWeather extends Block {
 	private boolean iRoundValues = false;
 	private boolean iShowWindUnit = true;
 	
+	protected final static String IW_WEATHER_BUNDLE_IDENTIFIER = "com.idega.block.weather";
+	
 	public void main(IWContext iwc) throws RemoteException {
 		IWBundle iwb = getBundle(iwc);
 		IWResourceBundle iwrb = getResourceBundle(iwc);
@@ -178,10 +180,6 @@ public abstract class AbstractWeather extends Block {
 			throw new IBORuntimeException(e);
 		}
 	}
-
-	public String getBundleIdentifier() {
-		return "com.idega.block.weather";
-	}
 	
 	public void setWeatherImageType(String type) {
 		if (type != null && !type.startsWith(".")) {
@@ -220,5 +218,9 @@ public abstract class AbstractWeather extends Block {
 	
 	public void setShowWindUnit(boolean showWindUnit) {
 		this.iShowWindUnit = showWindUnit;
+	}
+	
+	public String getBundleIdentifier() {
+		return IW_WEATHER_BUNDLE_IDENTIFIER;
 	}
 }
