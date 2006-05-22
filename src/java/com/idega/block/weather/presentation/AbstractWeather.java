@@ -56,9 +56,6 @@ public abstract class AbstractWeather extends Block {
 		else if (getSession(iwc).getWeatherStationID() != null) {
 			this.iWeatherID = getSession(iwc).getWeatherStationID();
 		}
-		else if (this.iWeatherID != null) {
-			getSession(iwc).setWeatherStationID(this.iWeatherID);
-		}
 		
 		if (this.iWeatherID == null) {
 			add(new Text(iwrb.getLocalizedString("no_station_selected", "No weather station selected")));
