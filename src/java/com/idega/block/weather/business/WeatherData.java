@@ -18,11 +18,9 @@ public class WeatherData {
 	private String name;
 	private Float temperature;
 	private Float windspeed;
-	private Float windDirection;
-	private String windDirectionTxt;
+	private String windDirection;
 	private String weatherDescription;
 	private String weatherCode;
-	private String weatherCodeURL;
 	private String clearance;
 	 
 	public String getClearance() {
@@ -65,14 +63,6 @@ public class WeatherData {
 		this.weatherCode = weatherCode;
 	}
 	
-	public String getWeatherCodeURL() {
-		return this.weatherCodeURL;
-	}
-	
-	public void setWeatherCodeURL(String weatherCodeURL) {
-		this.weatherCodeURL = weatherCodeURL;
-	}
-	
 	public String getWeatherDescription() {
 		return this.weatherDescription;
 	}
@@ -81,20 +71,12 @@ public class WeatherData {
 		this.weatherDescription = weatherDescription;
 	}
 	
-	public Float getWindDirection() {
+	public String getWindDirection() {
 		return this.windDirection;
 	}
 	
-	public void setWindDirection(Float windDirection) {
+	public void setWindDirection(String windDirection) {
 		this.windDirection = windDirection;
-	}
-	
-	public String getWindDirectionTxt() {
-		return this.windDirectionTxt;
-	}
-	
-	public void setWindDirectionTxt(String windDirectionTxt) {
-		this.windDirectionTxt = windDirectionTxt;
 	}
 	
 	public Float getWindspeed() {
@@ -111,5 +93,29 @@ public class WeatherData {
 	
 	public void setTimestamp(Timestamp timestamp) {
 		this.timestamp = timestamp;
+	}
+	
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		
+		builder.append("name:").append(getName());
+		builder.append("&");
+		builder.append("id:").append(getID());
+		builder.append("&");
+		builder.append("time:").append(getTimestamp().toString());
+		builder.append("&");
+		builder.append("temperature:").append(getTemperature());
+		builder.append("&");
+		builder.append("windSpeed:").append(getWindspeed());
+		builder.append("&");
+		builder.append("windDirection:").append(getWindDirection());
+		builder.append("&");
+		builder.append("description:").append(getWeatherDescription());
+		builder.append("&");
+		builder.append("code:").append(getWeatherCode());
+		builder.append("&");
+		builder.append("clearance:").append(getClearance());
+		
+		return builder.toString();
 	}
 }

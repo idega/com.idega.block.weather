@@ -1,35 +1,27 @@
 div.weather {
 	position: relative;
-	background-color: #c9c9c9;
-	width: 200px;
-	height: 100px;
-	border: 1px #000 solid;
 }
 
 div.image {
-	position: absolute;
-	top: -20px;
-	left: 100px;
-}
-
-div.weatherStation, div.temperature {
-	padding: 8px;
-	font-size: 14px;
-	font-family: "Trebuchet MS";
-	font-weight: bold;
-	text-shadow: #fff 2px 2px 1px;
 }
 
 div.weatherStation {
-	float: left;
 }
 
 div.temperature {
-	float: right;
+}
+
+div.weatherStation {
+}
+
+div.temperature {
 }
 
 div.windspeed {
-	clear: both;
+}
+
+div.windspeed span.unit {
+	padding-left: 4px;
 }
 
 div.weatherStations {
@@ -37,5 +29,4 @@ div.weatherStations {
 }
 
 div.windDirectionIcon {
-	display: none;
 }
