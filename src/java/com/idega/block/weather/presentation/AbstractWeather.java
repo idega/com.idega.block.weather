@@ -30,6 +30,7 @@ import com.idega.presentation.Span;
 import com.idega.presentation.text.Text;
 import com.idega.presentation.ui.DropdownMenu;
 import com.idega.presentation.ui.Form;
+import com.idega.util.PresentationUtil;
 
 
 public abstract class AbstractWeather extends Block {
@@ -46,6 +47,7 @@ public abstract class AbstractWeather extends Block {
 	public void main(IWContext iwc) throws RemoteException {
 		IWBundle iwb = getBundle(iwc);
 		IWResourceBundle iwrb = getResourceBundle(iwc);
+		PresentationUtil.addStyleSheetToHeader(iwc, iwb.getVirtualPathWithFileNameString("style/weather.css"));
 		
 		String wID = iwc.getParameter("wstations");
 		if (wID != null) {
