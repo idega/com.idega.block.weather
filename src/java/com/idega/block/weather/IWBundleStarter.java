@@ -11,11 +11,13 @@ package com.idega.block.weather;
 
 import com.idega.idegaweb.IWBundle;
 import com.idega.idegaweb.IWBundleStartable;
+import com.idega.idegaweb.include.GlobalIncludeManager;
 
 
 public class IWBundleStarter implements IWBundleStartable {
 
 	public void start(IWBundle starterBundle) {
+		GlobalIncludeManager.getInstance().addBundleStyleSheet("com.idega.block.weather", "/style/weather.css");
 	}
 
 	public void stop(IWBundle starterBundle) {
