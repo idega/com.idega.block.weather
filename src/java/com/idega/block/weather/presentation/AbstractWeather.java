@@ -26,27 +26,28 @@ import com.idega.presentation.Block;
 import com.idega.presentation.IWContext;
 import com.idega.presentation.Image;
 import com.idega.presentation.Layer;
+import com.idega.presentation.Span;
 import com.idega.presentation.text.Text;
 import com.idega.presentation.ui.DropdownMenu;
 import com.idega.presentation.ui.Form;
+import com.idega.util.PresentationUtil;
 
 
 public abstract class AbstractWeather extends Block {
 
-	private String iWeatherID;
+	private String iWeatherID = null;
+	private String stationName = null;
 	private String weatherImageLocation = null;
-	private String weatherImageType = ".png";
-	private String weatherImageWidth = "75";
 	
 	private boolean iShowWeatherStations = true;
 	private boolean iRoundValues = false;
-	private boolean iShowWindUnit = true;
 	
 	protected final static String IW_WEATHER_BUNDLE_IDENTIFIER = "com.idega.block.weather";
 	
 	public void main(IWContext iwc) throws RemoteException {
 		IWBundle iwb = getBundle(iwc);
 		IWResourceBundle iwrb = getResourceBundle(iwc);
+		PresentationUtil.addStyleSheetToHeader(iwc, iwb.getVirtualPathWithFileNameString("style/weather.css"));
 		
 		String wID = iwc.getParameter("wstations");
 		if (wID != null) {
@@ -73,7 +74,12 @@ public abstract class AbstractWeather extends Block {
 		
 		Layer station = new Layer(Layer.DIV);
 		station.setStyleClass("weatherStation");
-		station.add(new Text(data.getName()));
+		if (this.stationName != null) {
+			station.add(new Text(stationName));
+		}
+		else {
+			station.add(new Text(data.getName()));
+		}
 		layer.add(station);
 		
 		if (data.getWeatherCode() != null) {
@@ -81,12 +87,11 @@ public abstract class AbstractWeather extends Block {
 			image.setStyleClass("image");			
 			Image weatherImage = null;
 			if (this.weatherImageLocation == null) {
-				weatherImage = iwb.getImage("/images/"+ data.getWeatherCode() + this.weatherImageType, data.getWeatherDescription());
+				weatherImage = iwb.getImage("images/weatherIcons/"+ data.getWeatherCode() + ".png", data.getWeatherDescription());
 			}
 			else {
-				weatherImage = new Image(this.weatherImageLocation+data.getWeatherCode()+this.weatherImageType, data.getWeatherDescription());
+				weatherImage = new Image(this.weatherImageLocation + data.getWeatherCode() + ".png", data.getWeatherDescription());
 			}
-			weatherImage.setWidth(this.weatherImageWidth);
 			image.add(weatherImage);
 			layer.add(image);
 		}
@@ -117,20 +122,22 @@ public abstract class AbstractWeather extends Block {
 		Layer windspeed = new Layer(Layer.DIV);
 		windspeed.setStyleClass("windspeed");
 		windspeed.add(new Text(format.format(windspeedValue.floatValue())));
-		if (this.iShowWindUnit) {
-			windspeed.add(new Text(Text.NON_BREAKING_SPACE + getBusiness().getWindSpeedUnit()));
-		}
+
+		Span unit = new Span(new Text(getBusiness().getWindSpeedUnit()));
+		unit.setStyleClass("unit");
+		windspeed.add(unit);
+		
 		layer.add(windspeed);
 		
-		if (data.getWindDirectionTxt() != null) {
+		if (data.getWindDirection() != null) {
 			Layer windDirection = new Layer(Layer.DIV);
 			windDirection.setStyleClass("windDirection");
-			windDirection.add(new Text(data.getWindDirectionTxt()));
+			windDirection.add(new Text(data.getWindDirection()));
 			layer.add(windDirection);
 			
 			Layer windDirectionImage = new Layer(Layer.DIV);
 			windDirectionImage.setStyleClass("windDirectionIcon");
-			windDirectionImage.add(iwb.getImage("/images/"+ data.getWindDirectionTxt() + this.weatherImageType, data.getWindDirectionTxt()));
+			windDirectionImage.add(iwb.getImage("images/windDirection/"+ data.getWindDirection() + ".png", data.getWindDirection()));
 			layer.add(windDirectionImage);
 		}
 		
@@ -178,25 +185,11 @@ public abstract class AbstractWeather extends Block {
 		}
 	}
 	
-	public void setWeatherImageType(String type) {
-		if (type != null && !type.startsWith(".")) {
-			type = "."+type;
-		}
-		this.weatherImageType = type;
-	}
-	
 	public void setWeatherImageLocation(String location) {
 		if (location != null && !location.endsWith("/")) {
 			location = location+"/";
 		}
 		this.weatherImageLocation = location;
-	}
-	
-	public void setWeatherImageWidth(String width) {
-		this.weatherImageWidth = width;
-	}
-	
-	public void setShowForcast(boolean showForcast) {
 	}
 	
 	public void setWeatherID(String weatherID) {
@@ -206,17 +199,15 @@ public abstract class AbstractWeather extends Block {
 	public void setShowWeatherStations(boolean showWeatherStations) {
 		this.iShowWeatherStations = showWeatherStations;
 	}
-
 	
+	public void setStationName(String name) {
+		this.stationName = name;
+	}
+
 	public void setToRoundValues(boolean roundValues) {
 		this.iRoundValues = roundValues;
 	}
 
-	
-	public void setShowWindUnit(boolean showWindUnit) {
-		this.iShowWindUnit = showWindUnit;
-	}
-	
 	public String getBundleIdentifier() {
 		return IW_WEATHER_BUNDLE_IDENTIFIER;
 	}
